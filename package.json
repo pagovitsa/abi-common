@@ -1,0 +1,56 @@
+{
+  "name": "@bcoders.gr/abi-common",
+  "version": "1.0.0",
+  "description": "Common utilities and wrapper functions for Ethereum ABI encoding/decoding using @bcoders.gr/abi-codec - includes Uniswap V2, ERC20, and custom contract support",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node example.js",
+    "example": "node example.js",
+    "benchmark": "node benchmark.js",
+    "prepublishOnly": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pagovitsa/abi-common.git"
+  },
+  "homepage": "https://github.com/pagovitsa/abi-common#readme",
+  "bugs": {
+    "url": "https://github.com/pagovitsa/abi-common/issues"
+  },
+  "files": [
+    "index.js",
+    "src/",
+    "README.md",
+    "CHANGELOG.md",
+    "PERFORMANCE.md"
+  ],
+  "keywords": [
+    "abi-common",
+    "abi-codec",
+    "ethereum",
+    "uniswap",
+    "erc20",
+    "defi",
+    "web3",
+    "smart-contracts",
+    "encoding",
+    "decoding",
+    "blockchain",
+    "solidity",
+    "web3js",
+    "ethers"
+  ],
+  "author": "pagovitsa",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "@bcoders.gr/abi-codec": "^1.0.0"
+  },
+  "devDependencies": {},
+  "publishConfig": {
+    "access": "public"
+  }
+}
