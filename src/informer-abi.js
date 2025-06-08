@@ -366,3 +366,45 @@ export const parseReserves = (decodedResult) => {
 
 // Export the ABI for external use
 export const INFORMER_CONTRACT_ABI = INFORMER_ABI;
+
+// Helper function to get pair and token details with error handling
+export const getPairAndTokenDetails = async (provider, pairAddress, informerAddress = "0x6cc4d0b709ee830fc6c4e124120596ede74ad2fb") => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!pairAddress) {
+            throw new Error('Pair address is required');
+        }
+        
+        // Validate address format (basic check)
+        if (!pairAddress.startsWith('0x') || pairAddress.length !== 42) {
+            throw new Error('Invalid pair address format');
+        }
+        
+        const txResponse = await provider.call(informerAddress, encodeGetPairAndTokenDetails(pairAddress));
+        
+        if (!txResponse) {
+            throw new Error('No response from contract call');
+        }
+        
+        const response = decodePairAndTokenDetailsResult(txResponse);
+        
+        if (!response || !Array.isArray(response) || response.length === 0) {
+            throw new Error('Invalid response format or empty response');
+        }
+        
+        const pairData = response[0];
+        
+        if (!pairData || !pairData.pairAddress) {
+            throw new Error('Invalid pair data received');
+        }
+        
+        return pairData;
+        
+    } catch (error) {
+        console.error('Error getting pair and token details:', error.message);
+        throw error;
+    }
+};

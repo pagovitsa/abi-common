@@ -128,7 +128,8 @@ export {
     decodeTokenBalanceResult,
     decodeTotalSupplyResult as decodeInformerTotalSupplyResult,
     parsePairDetails,
-    parseReserves
+    parseReserves,
+    getPairAndTokenDetails
 } from './src/informer-abi.js';
 
 // Export a convenience function to get all encoders/decoders
