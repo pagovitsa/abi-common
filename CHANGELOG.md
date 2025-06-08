@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.2.0] - 2025-06-08
+
+### 🚀 Major Update: Enhanced Tuple Decoding Support
+
+#### Dependencies Update
+- **Updated abi-codec**: Upgraded `@bcoders.gr/abi-codec` from `^1.0.0` to `^1.1.0`
+- **Tuple Decoding**: Now supports full tuple/struct decoding for complex smart contract return values
+- **Nested Structures**: Can handle complex nested data structures including arrays of tuples
+- **Backward Compatibility**: All existing functionality remains unchanged
+
+#### Technical Improvements
+- **Enhanced Decoding**: Complex return values from contracts like Uniswap pairs now decode properly
+- **Type Safety**: Improved type handling for dynamic and static types in tuples
+- **Error Handling**: Better error messages for tuple-related decoding issues
+- **Performance**: Optimized tuple decoding performance for complex structures
+
+#### Bug Fixes
+- **Resolved**: "Tuple decoding not yet implemented" error when decoding complex contract data
+- **Fixed**: Proper handling of null-terminated strings in tuple components
+- **Improved**: JSON serialization compatibility by returning strings instead of BigInt objects
+
+### 🔧 Testing
+- All existing tests continue to pass (56/56 tests successful)
+- Enhanced test coverage for complex tuple structures
+- Performance benchmarks maintained for encoding/decoding operations
+
 ## [1.1.0] - 2025-06-08
 
 ### ✅ Added Features

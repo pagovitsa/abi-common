@@ -1,6 +1,6 @@
 {
   "name": "@bcoders.gr/abi-common",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Common utilities and wrapper functions for Ethereum ABI encoding/decoding using @bcoders.gr/abi-codec - includes Uniswap V2, ERC20, and custom contract support",
   "main": "index.js",
   "type": "module",
@@ -47,7 +47,7 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
-    "@bcoders.gr/abi-codec": "^1.0.0"
+    "@bcoders.gr/abi-codec": "^1.1.0"
   },
   "devDependencies": {},
   "publishConfig": {
