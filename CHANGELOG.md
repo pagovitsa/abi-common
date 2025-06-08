@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.1.0] - 2025-06-08
+
+### ✅ Added Features
+
+#### Uniswap V2 Factory Events
+- **PairCreated Event Support**: Added `decodePairCreatedEvent(data, topics)` function
+- **Event ABI**: Added PairCreated event definition to Uniswap V2 Factory ABI
+- **Testing**: Added comprehensive test for PairCreated event decoding
+- **Documentation**: Updated README.md with PairCreated event documentation
+
+### 🔧 Technical Details
+- Extended `UNISWAP_V2_FACTORY_ABI` with proper PairCreated event structure
+- Implemented event log decoding with proper topic and data parsing
+- Added error handling for invalid event data
+- Export support through main index.js file
+
 ## [1.0.0] - 2025-06-07
 
 ### ✅ Completed Features

@@ -140,6 +140,9 @@ const { UniswapV2Router, ERC20 } = AbiCommon;
 - `decodeAddressResult(functionName, data)` - For address results
 - `decodeUintResult(functionName, data)` - For uint results
 
+#### Event Decoders
+- `decodePairCreatedEvent(data, topics)` - For PairCreated event logs
+
 ### 💰 ERC20 Token Functions
 
 #### Read Functions

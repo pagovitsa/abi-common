@@ -64,6 +64,17 @@ const UNISWAP_V2_FACTORY_ABI = [
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {"indexed": true, "internalType": "address", "name": "token0", "type": "address"},
+            {"indexed": true, "internalType": "address", "name": "token1", "type": "address"},
+            {"indexed": false, "internalType": "address", "name": "pair", "type": "address"},
+            {"indexed": false, "internalType": "uint256", "name": "", "type": "uint256"}
+        ],
+        "name": "PairCreated",
+        "type": "event"
     }
 ];
 
@@ -148,6 +159,19 @@ export const decodeAddressResult = (functionName, data) => {
 
 export const decodeUintResult = (functionName, data) => {
     return abiCoder.decodeFunctionResult(functionName, data);
+};
+
+// Event decoding functions
+export const decodePairCreatedEvent = (data, topics) => {
+    if (!data || !topics || topics.length < 3) {
+        throw new Error('Invalid PairCreated event data or topics');
+    }
+    
+    try {
+        return abiCoder.decodeLog(data, topics);
+    } catch (error) {
+        throw new Error(`Failed to decode PairCreated event: ${error.message}`);
+    }
 };
 
 // Export the ABI for external use

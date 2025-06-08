@@ -35,6 +35,7 @@ import {
     encodeAllPairsLength,
     decodeAddressResult,
     decodeUintResult,
+    decodePairCreatedEvent,
     
     // Individual function imports - ERC20
     encodeBalanceOf,
@@ -294,6 +295,17 @@ test('Decode address result (mock data)', () => {
 test('Decode uint result (mock data)', () => {
     const mockUintData = '0x0000000000000000000000000000000000000000000000000000000000002710'; // 10000 in hex
     return decodeUintResult('allPairsLength', mockUintData);
+});
+
+test('Decode PairCreated event (mock data)', () => {
+    // Mock PairCreated event data
+    const mockEventData = '0x000000000000000000000000b4e16d0168e52d35cacd2c6185b44281ec28c9dc0000000000000000000000000000000000000000000000000000000000002710';
+    const mockTopics = [
+        '0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9', // PairCreated event signature
+        '0x000000000000000000000000c02aaa39b223fe8563b41cfc8eb645c0c67c6840', // token0 (WETH)
+        '0x000000000000000000000000a0b86a33e6441e56c8e3e8d13c9c65a3e4c8c5b4'  // token1 (USDC)
+    ];
+    return decodePairCreatedEvent(mockEventData, mockTopics);
 });
 
 console.log();

@@ -67,7 +67,8 @@ export {
     decodeSetFeeTo,
     decodeSetFeeToSetter,
     decodeAddressResult,
-    decodeUintResult
+    decodeUintResult,
+    decodePairCreatedEvent
 } from './src/uniswap-v2-factory.js';
 
 export {
