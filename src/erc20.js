@@ -440,3 +440,122 @@ export const getTokenDecimals = async (provider, tokenAddress) => {
         throw error;
     }
 };
+
+// Helper function for approve operation (returns transaction data)
+export const approve = async (provider, tokenAddress, spender, amount) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!tokenAddress) {
+            throw new Error('Token address is required');
+        }
+        
+        if (!spender) {
+            throw new Error('Spender address is required');
+        }
+        
+        if (!amount && amount !== 0) {
+            throw new Error('Amount is required');
+        }
+        
+        if (!isValidAddress(tokenAddress)) {
+            throw new Error('Invalid token address format');
+        }
+        
+        if (!isValidAddress(spender)) {
+            throw new Error('Invalid spender address format');
+        }
+        
+        const txData = encodeApprove(spender, amount);
+        
+        return txData;
+        
+    } catch (error) {
+        console.error('Error encoding approve transaction:', error.message);
+        throw error;
+    }
+};
+
+// Helper function for transfer operation (returns transaction data)
+export const transfer = async (provider, tokenAddress, to, amount) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!tokenAddress) {
+            throw new Error('Token address is required');
+        }
+        
+        if (!to) {
+            throw new Error('Recipient address is required');
+        }
+        
+        if (!amount && amount !== 0) {
+            throw new Error('Amount is required');
+        }
+        
+        if (!isValidAddress(tokenAddress)) {
+            throw new Error('Invalid token address format');
+        }
+        
+        if (!isValidAddress(to)) {
+            throw new Error('Invalid recipient address format');
+        }
+        
+        const txData = encodeTransfer(to, amount);
+        
+        return txData;
+        
+    } catch (error) {
+        console.error('Error encoding transfer transaction:', error.message);
+        throw error;
+    }
+};
+
+// Helper function for transferFrom operation (returns transaction data)
+export const transferFrom = async (provider, tokenAddress, from, to, amount) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!tokenAddress) {
+            throw new Error('Token address is required');
+        }
+        
+        if (!from) {
+            throw new Error('From address is required');
+        }
+        
+        if (!to) {
+            throw new Error('To address is required');
+        }
+        
+        if (!amount && amount !== 0) {
+            throw new Error('Amount is required');
+        }
+        
+        if (!isValidAddress(tokenAddress)) {
+            throw new Error('Invalid token address format');
+        }
+        
+        if (!isValidAddress(from)) {
+            throw new Error('Invalid from address format');
+        }
+        
+        if (!isValidAddress(to)) {
+            throw new Error('Invalid to address format');
+        }
+        
+        const txData = encodeTransferFrom(from, to, amount);
+        
+        return txData;
+        
+    } catch (error) {
+        console.error('Error encoding transferFrom transaction:', error.message);
+        throw error;
+    }
+};

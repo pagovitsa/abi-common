@@ -1,6 +1,6 @@
 {
   "name": "@bcoders.gr/abi-common",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Common utilities with organized helper functions for Ethereum ABI encoding/decoding - supports erc20.getBalanceOf(), informer.getReserves(), uniswap.v2.factory.getPair(), uniswap.v2.router.getAmountOut(), uniswap.v2.pair.getReserves() pattern",
   "main": "index.js",
   "type": "module",

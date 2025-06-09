@@ -47,7 +47,10 @@ import {
     getTokenTotalSupply,
     getTokenName,
     getTokenSymbol,
-    getTokenDecimals
+    getTokenDecimals,
+    approve,
+    transfer,
+    transferFrom
 } from './src/erc20.js';
 
 // Export organized helper functions in nested structure
@@ -65,7 +68,10 @@ export const erc20 = {
     getTotalSupply: getTokenTotalSupply,
     getName: getTokenName,
     getSymbol: getTokenSymbol,
-    getDecimals: getTokenDecimals
+    getDecimals: getTokenDecimals,
+    approve,
+    transfer,
+    transferFrom
 };
 
 export const uniswap = {
