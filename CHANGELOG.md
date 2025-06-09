@@ -1,5 +1,34 @@
 # Changelog
 
+## [3.1.0] - 2025-06-09
+
+### 🔍 New Feature: Log Decoder
+
+#### New Functionality
+- **Log Decoder Module**: Added comprehensive log decoding for common Ethereum events
+- **Supported Events**: 
+  - Transfer events (ERC20 tokens)
+  - Mint events (Uniswap V2 pairs)
+  - PairCreated events (Uniswap V2 factory)
+- **Multiple Format Support**: Can decode from single receipts or arrays of receipts
+- **Event Filtering**: Get specific event types or all events at once
+
+#### New API Functions
+- `decoder.decodeLogs(receipts)` - Decode all supported events
+- `decoder.decodeTransferLogs(receipts)` - Decode only Transfer events
+- `decoder.decodeMintLogs(receipts)` - Decode only Mint events
+- `decoder.decodePairCreatedLogs(receipts)` - Decode only PairCreated events
+- `decoder.getEventSignature(eventType)` - Get event signature hash
+
+#### Dependencies
+- **Added**: `@ethersproject/abi@^5.7.0` for reliable log parsing
+- **Enhanced**: Better integration with existing abi-codec functionality
+
+#### Documentation
+- **Updated README**: Added comprehensive decoder documentation with examples
+- **Example Usage**: Added examples.js file showing real-world usage patterns
+- **Test Coverage**: Added test-decoder.js for validation
+
 ## [1.2.0] - 2025-06-08
 
 ### 🚀 Major Update: Enhanced Tuple Decoding Support

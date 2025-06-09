@@ -1,6 +1,6 @@
 {
   "name": "@bcoders.gr/abi-common",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Production-ready utilities with enhanced router functionality for Ethereum contract interactions - supports call/send/estimate modes, fee-on-transfer tokens, and comprehensive validation",
   "main": "index.js",
   "type": "module",
@@ -45,7 +45,8 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
-    "@bcoders.gr/abi-codec": "^1.1.0"
+    "@bcoders.gr/abi-codec": "^1.1.0",
+    "@ethersproject/abi": "^5.7.0"
   },
   "devDependencies": {},
   "publishConfig": {

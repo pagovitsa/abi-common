@@ -16,6 +16,7 @@ This package (`@bcoders.gr/abi-common`) provides high-level, pre-configured wrap
 
 - 🎯 **Organized Helper Functions**: Intuitive structure with `informer.getReserves()`, `erc20.getBalanceOf()`, `uniswap.v2.router.function()` format
 - 🔧 **Smart Contract Interactions**: Complete blockchain operation support with error handling and validation
+- 🔍 **Log Decoder**: Decode Mint, Transfer, and PairCreated events from transaction receipts
 - 🏭 **Uniswap V2 Support**: Full router, factory, and pair functionality with easy-to-use helpers
 - 💰 **ERC20 Token Operations**: Standard token operations with comprehensive helper functions
 - 📊 **Informer Contract**: Specialized helpers for token and pair information queries
@@ -35,10 +36,14 @@ This package provides organized helper functions for blockchain interactions wit
 ### Organized Helper Functions (Recommended)
 
 ```javascript
-import { informer, erc20, uniswap } from '@bcoders.gr/abi-common';
+import { informer, decoder, erc20, uniswap } from '@bcoders.gr/abi-common';
 
 // Get pair reserves using informer helper
 const reserves = await informer.getReserves(provider, pairAddress, informerAddress);
+
+// Decode logs from transaction receipts
+const decodedLogs = decoder.decodeLogs(transactionReceipt);
+const mintEvents = decoder.decodeMintLogs(transactionReceipt);
 
 // Check ERC20 token balance
 const balance = await erc20.getBalanceOf(provider, tokenAddress, walletAddress);
@@ -55,6 +60,7 @@ const swapResult = await uniswap.v2.router.swapETHForExactTokens(
 ### Helper Function Categories
 
 - **`informer.*`** - Specialized contract for pair and token data
+- **`decoder.*`** - Log decoding for Mint, Transfer, and PairCreated events
 - **`erc20.*`** - Standard ERC20 token operations  
 - **`uniswap.v2.factory.*`** - Uniswap V2 factory operations
 - **`uniswap.v2.router.*`** - Uniswap V2 router operations
@@ -104,6 +110,94 @@ const decimals = await erc20.getDecimals(provider, tokenAddress);
 const approveTx = await erc20.approve(provider, tokenAddress, spender, amount);
 const transferTx = await erc20.transfer(provider, tokenAddress, to, amount);
 const transferFromTx = await erc20.transferFrom(provider, tokenAddress, from, to, amount);
+```
+
+### 🔍 Log Decoder Helper Functions
+
+The `decoder` object provides functions for decoding common Ethereum event logs from transaction receipts:
+
+```javascript
+import { decoder } from '@bcoders.gr/abi-common';
+
+// Decode all supported event types from transaction receipts
+const allLogs = decoder.decodeLogs(transactionReceipt);
+// Returns: { transfers: [...], mints: [...], pairCreated: [...] }
+
+// Decode specific event types
+const transferEvents = decoder.decodeTransferLogs(transactionReceipt);
+const mintEvents = decoder.decodeMintLogs(transactionReceipt);
+const pairCreatedEvents = decoder.decodePairCreatedLogs(transactionReceipt);
+
+// Get event signature hash for filtering
+const transferSig = decoder.getEventSignature('TRANSFER');
+const mintSig = decoder.getEventSignature('MINT');
+const pairCreatedSig = decoder.getEventSignature('PAIR_CREATED');
+```
+
+#### Supported Events
+
+- **Transfer Events**: ERC20 token transfers
+  ```javascript
+  {
+    type: 'Transfer',
+    contractAddress: '0x...',
+    from: '0x...',
+    to: '0x...',
+    value: '1000000000000000000',
+    blockNumber: '0x12a05f0',
+    transactionHash: '0x...',
+    logIndex: '0x3'
+  }
+  ```
+
+- **Mint Events**: Uniswap V2 pair liquidity additions
+  ```javascript
+  {
+    type: 'Mint',
+    contractAddress: '0x...',
+    sender: '0x...',
+    amount0: '1000000000000000000',
+    amount1: '2000000000000000000',
+    blockNumber: '0x12a05f0',
+    transactionHash: '0x...',
+    logIndex: '0x2'
+  }
+  ```
+
+- **PairCreated Events**: Uniswap V2 factory pair creation
+  ```javascript
+  {
+    type: 'PairCreated',
+    contractAddress: '0x...',
+    token0: '0x...',
+    token1: '0x...',
+    pair: '0x...',
+    pairIndex: '31',
+    blockNumber: '0x12a05f0',
+    transactionHash: '0x...',
+    logIndex: '0x1'
+  }
+  ```
+
+#### Usage in getMint Function
+
+```javascript
+async function getMint(provider, pairAddress, fromBlock, toBlock) {
+    const logs = await provider.getMint(pairAddress, fromBlock, toBlock);
+    const receipt = { logs: logs };
+    
+    const mintEvents = decoder.decodeMintLogs(receipt);
+    if (mintEvents.length === 0) {
+        throw new Error('No mint events found');
+    }
+    
+    const mintEvent = mintEvents[0];
+    return {
+        amount0: mintEvent.amount0,
+        amount1: mintEvent.amount1,
+        blockNumber: mintEvent.blockNumber
+    };
+}
 ```
 
 ### 🔄 Uniswap V2 Helper Functions

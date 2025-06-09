@@ -53,6 +53,14 @@ import {
     transferFrom
 } from './src/erc20.js';
 
+import {
+    decodeLogs,
+    decodeTransferLogs,
+    decodeMintLogs,
+    decodePairCreatedLogs,
+    getEventSignature
+} from './src/log-decoder.js';
+
 // Export organized helper functions in nested structure
 export const informer = {
     getPairAndTokenDetails,
@@ -60,6 +68,14 @@ export const informer = {
     getReserves,
     getTokenBalance,
     getTotalSupply
+};
+
+export const decoder = {
+    decodeLogs,
+    decodeTransferLogs,
+    decodeMintLogs,
+    decodePairCreatedLogs,
+    getEventSignature
 };
 
 export const erc20 = {
@@ -113,6 +129,7 @@ export const uniswap = {
 // Default export with all organized functions
 export default {
     informer,
+    decoder,
     erc20,
     uniswap
 };
