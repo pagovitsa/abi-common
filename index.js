@@ -16,6 +16,32 @@ import {
 } from './src/uniswap-v2-factory.js';
 
 import {
+    getAmountOut,
+    getAmountIn,
+    getAmountsOut,
+    getAmountsIn,
+    swapETHForExactTokens,
+    swapExactETHForTokens,
+    swapExactETHForTokensSupportingFeeOnTransferTokens,
+    swapExactTokensForETH,
+    swapExactTokensForETHSupportingFeeOnTransferTokens
+} from './src/uniswap-v2-router.js';
+
+import {
+    getPairName,
+    getPairSymbol,
+    getPairDecimals,
+    getPairTotalSupply,
+    getPairBalanceOf,
+    getToken0,
+    getToken1,
+    getPairReserves,
+    getPrice0CumulativeLast,
+    getPrice1CumulativeLast,
+    getKLast
+} from './src/uniswap-v2-pair.js';
+
+import {
     getBalanceOf,
     getAllowance,
     getTokenTotalSupply,
@@ -25,7 +51,7 @@ import {
 } from './src/erc20.js';
 
 // Export organized helper functions in nested structure
-export const Informer = {
+export const informer = {
     getPairAndTokenDetails,
     getOwner,
     getReserves,
@@ -33,7 +59,7 @@ export const Informer = {
     getTotalSupply
 };
 
-export const ERC20 = {
+export const erc20 = {
     getBalanceOf,
     getAllowance,
     getTotalSupply: getTokenTotalSupply,
@@ -42,48 +68,45 @@ export const ERC20 = {
     getDecimals: getTokenDecimals
 };
 
-export const UniswapV2Factory = {
-    getPair,
-    getAllPairs,
-    getAllPairsLength,
-    getFeeTo,
-    getFeeToSetter
-};
-
-export const UniswapV2 = {
-    Factory: {
-        getPair,
-        getAllPairs,
-        getAllPairsLength,
-        getFeeTo,
-        getFeeToSetter
+export const uniswap = {
+    v2: {
+        factory: {
+            getPair,
+            getAllPairs,
+            getAllPairsLength,
+            getFeeTo,
+            getFeeToSetter
+        },
+        router: {
+            getAmountOut,
+            getAmountIn,
+            getAmountsOut,
+            getAmountsIn,
+            swapETHForExactTokens,
+            swapExactETHForTokens,
+            swapExactETHForTokensSupportingFeeOnTransferTokens,
+            swapExactTokensForETH,
+            swapExactTokensForETHSupportingFeeOnTransferTokens
+        },
+        pair: {
+            getName: getPairName,
+            getSymbol: getPairSymbol,
+            getDecimals: getPairDecimals,
+            getTotalSupply: getPairTotalSupply,
+            getBalanceOf: getPairBalanceOf,
+            getToken0,
+            getToken1,
+            getReserves: getPairReserves,
+            getPrice0CumulativeLast,
+            getPrice1CumulativeLast,
+            getKLast
+        }
     }
-};
-
-// Individual function exports for convenience
-export {
-    getPairAndTokenDetails,
-    getOwner,
-    getReserves,
-    getTokenBalance,
-    getTotalSupply,
-    getPair,
-    getAllPairs,
-    getAllPairsLength,
-    getFeeTo,
-    getFeeToSetter,
-    getBalanceOf,
-    getAllowance,
-    getTokenTotalSupply,
-    getTokenName,
-    getTokenSymbol,
-    getTokenDecimals
 };
 
 // Default export with all organized functions
 export default {
-    Informer,
-    ERC20,
-    UniswapV2Factory,
-    UniswapV2
+    informer,
+    erc20,
+    uniswap
 };

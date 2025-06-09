@@ -379,3 +379,219 @@ export const getAmountsIn = async (provider, routerAddress, amountOut, path) => 
         throw error;
     }
 };
+
+// Helper functions for swap operations
+export const swapETHForExactTokens = async (provider, routerAddress, amountOut, path, to, deadline) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!routerAddress) {
+            throw new Error('Router address is required');
+        }
+        
+        if (!path || !Array.isArray(path) || path.length < 2) {
+            throw new Error('Valid path with at least 2 addresses is required');
+        }
+        
+        if (!to) {
+            throw new Error('Recipient address is required');
+        }
+        
+        if (!isValidAddress(routerAddress)) {
+            throw new Error('Invalid router address format');
+        }
+        
+        if (!isValidAddress(to)) {
+            throw new Error('Invalid recipient address format');
+        }
+        
+        // Validate all addresses in path
+        for (const address of path) {
+            if (!isValidAddress(address)) {
+                throw new Error(`Invalid address in path: ${address}`);
+            }
+        }
+        
+        const txData = encodeSwapETHForExactTokens(amountOut, path, to, deadline);
+        
+        return txData;
+        
+    } catch (error) {
+        console.error('Error encoding swapETHForExactTokens:', error.message);
+        throw error;
+    }
+};
+
+export const swapExactETHForTokens = async (provider, routerAddress, amountOutMin, path, to, deadline) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!routerAddress) {
+            throw new Error('Router address is required');
+        }
+        
+        if (!path || !Array.isArray(path) || path.length < 2) {
+            throw new Error('Valid path with at least 2 addresses is required');
+        }
+        
+        if (!to) {
+            throw new Error('Recipient address is required');
+        }
+        
+        if (!isValidAddress(routerAddress)) {
+            throw new Error('Invalid router address format');
+        }
+        
+        if (!isValidAddress(to)) {
+            throw new Error('Invalid recipient address format');
+        }
+        
+        // Validate all addresses in path
+        for (const address of path) {
+            if (!isValidAddress(address)) {
+                throw new Error(`Invalid address in path: ${address}`);
+            }
+        }
+        
+        const txData = encodeSwapExactETHForTokens(amountOutMin, path, to, deadline);
+        
+        return txData;
+        
+    } catch (error) {
+        console.error('Error encoding swapExactETHForTokens:', error.message);
+        throw error;
+    }
+};
+
+export const swapExactETHForTokensSupportingFeeOnTransferTokens = async (provider, routerAddress, amountOutMin, path, to, deadline) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!routerAddress) {
+            throw new Error('Router address is required');
+        }
+        
+        if (!path || !Array.isArray(path) || path.length < 2) {
+            throw new Error('Valid path with at least 2 addresses is required');
+        }
+        
+        if (!to) {
+            throw new Error('Recipient address is required');
+        }
+        
+        if (!isValidAddress(routerAddress)) {
+            throw new Error('Invalid router address format');
+        }
+        
+        if (!isValidAddress(to)) {
+            throw new Error('Invalid recipient address format');
+        }
+        
+        // Validate all addresses in path
+        for (const address of path) {
+            if (!isValidAddress(address)) {
+                throw new Error(`Invalid address in path: ${address}`);
+            }
+        }
+        
+        const txData = encodeSwapExactETHForTokensSupportingFeeOnTransferTokens(amountOutMin, path, to, deadline);
+        
+        return txData;
+        
+    } catch (error) {
+        console.error('Error encoding swapExactETHForTokensSupportingFeeOnTransferTokens:', error.message);
+        throw error;
+    }
+};
+
+export const swapExactTokensForETH = async (provider, routerAddress, amountIn, amountOutMin, path, to, deadline) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!routerAddress) {
+            throw new Error('Router address is required');
+        }
+        
+        if (!path || !Array.isArray(path) || path.length < 2) {
+            throw new Error('Valid path with at least 2 addresses is required');
+        }
+        
+        if (!to) {
+            throw new Error('Recipient address is required');
+        }
+        
+        if (!isValidAddress(routerAddress)) {
+            throw new Error('Invalid router address format');
+        }
+        
+        if (!isValidAddress(to)) {
+            throw new Error('Invalid recipient address format');
+        }
+        
+        // Validate all addresses in path
+        for (const address of path) {
+            if (!isValidAddress(address)) {
+                throw new Error(`Invalid address in path: ${address}`);
+            }
+        }
+        
+        const txData = encodeSwapExactTokensForETH(amountIn, amountOutMin, path, to, deadline);
+        
+        return txData;
+        
+    } catch (error) {
+        console.error('Error encoding swapExactTokensForETH:', error.message);
+        throw error;
+    }
+};
+
+export const swapExactTokensForETHSupportingFeeOnTransferTokens = async (provider, routerAddress, amountIn, amountOutMin, path, to, deadline) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!routerAddress) {
+            throw new Error('Router address is required');
+        }
+        
+        if (!path || !Array.isArray(path) || path.length < 2) {
+            throw new Error('Valid path with at least 2 addresses is required');
+        }
+        
+        if (!to) {
+            throw new Error('Recipient address is required');
+        }
+        
+        if (!isValidAddress(routerAddress)) {
+            throw new Error('Invalid router address format');
+        }
+        
+        if (!isValidAddress(to)) {
+            throw new Error('Invalid recipient address format');
+        }
+        
+        // Validate all addresses in path
+        for (const address of path) {
+            if (!isValidAddress(address)) {
+                throw new Error(`Invalid address in path: ${address}`);
+            }
+        }
+        
+        const txData = encodeSwapExactTokensForETHSupportingFeeOnTransferTokens(amountIn, amountOutMin, path, to, deadline);
+        
+        return txData;
+        
+    } catch (error) {
+        console.error('Error encoding swapExactTokensForETHSupportingFeeOnTransferTokens:', error.message);
+        throw error;
+    }
+};
