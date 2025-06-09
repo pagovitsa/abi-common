@@ -547,7 +547,7 @@ export const getTotalSupply = async (provider, tokenAddress, informerAddress = "
             throw new Error('No response from contract call');
         }
         
-        const response = decodeInformerTotalSupplyResult(txResponse);
+        const response = decodeTotalSupplyResult(txResponse);
         
         if (!response || !Array.isArray(response) || response.length === 0) {
             throw new Error('Invalid response format or empty response');

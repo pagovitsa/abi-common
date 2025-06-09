@@ -127,7 +127,40 @@ const feeTo = await uniswap.v2.factory.getFeeTo(provider, factoryAddress);
 const feeToSetter = await uniswap.v2.factory.getFeeToSetter(provider, factoryAddress);
 ```
 
-#### Router Operations
+#### Enhanced Router Operations
+
+The enhanced router provides three modes for each swap function:
+
+```javascript
+// 1. CALL MODE - Static simulation (read-only, returns decoded response)
+const simulationResult = await uniswap.v2.router.enhanced.swapExactETHForTokens.call(
+    provider, amountOutMin, path, to, deadline
+);
+
+// 2. ESTIMATE MODE - Gas estimation
+const gasEstimate = await uniswap.v2.router.enhanced.swapExactETHForTokens.estimate(
+    provider, amountOutMin, path, to, deadline, { value: ethAmount }
+);
+
+// 3. SEND MODE - Execute transaction
+const transaction = await uniswap.v2.router.enhanced.swapExactETHForTokens.send(
+    provider, amountOutMin, path, to, deadline, { 
+        value: ethAmount,
+        gasLimit: gasEstimate
+    }
+);
+
+// Available enhanced swap functions:
+// - swapETHForExactTokens
+// - swapExactETHForTokens  
+// - swapExactETHForTokensSupportingFeeOnTransferTokens
+// - swapExactTokensForETH
+// - swapExactTokensForETHSupportingFeeOnTransferTokens
+
+// Each function supports .call, .send, and .estimate modes
+```
+
+#### Standard Router Operations
 
 ```javascript
 // Amount calculations

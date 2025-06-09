@@ -1,6 +1,9 @@
 import pkg from '@bcoders.gr/abi-codec';
 const { ABICodec } = pkg;
 
+// Default Uniswap V2 Factory address (Ethereum mainnet)
+const DEFAULT_UNISWAP_V2_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';
+
 // Uniswap V2 Factory ABI definitions
 const UNISWAP_V2_FACTORY_ABI = [
     {
@@ -186,15 +189,13 @@ const isValidAddress = (address) => {
 };
 
 // Helper functions for Uniswap V2 Factory interactions
-export const getPair = async (provider, factoryAddress, tokenA, tokenB) => {
+export const getPair = async (provider, tokenA, tokenB, factoryAddress = DEFAULT_UNISWAP_V2_FACTORY_ADDRESS) => {
     try {
         if (!provider) {
             throw new Error('Provider is required');
         }
         
-        if (!factoryAddress) {
-            throw new Error('Factory address is required');
-        }
+        const finalFactoryAddress = factoryAddress || DEFAULT_UNISWAP_V2_FACTORY_ADDRESS;
         
         if (!tokenA) {
             throw new Error('Token A address is required');
@@ -204,7 +205,7 @@ export const getPair = async (provider, factoryAddress, tokenA, tokenB) => {
             throw new Error('Token B address is required');
         }
         
-        if (!isValidAddress(factoryAddress)) {
+        if (!isValidAddress(finalFactoryAddress)) {
             throw new Error('Invalid factory address format');
         }
         
@@ -236,25 +237,23 @@ export const getPair = async (provider, factoryAddress, tokenA, tokenB) => {
     }
 };
 
-export const getAllPairs = async (provider, factoryAddress, index) => {
+export const getAllPairs = async (provider, index, factoryAddress = DEFAULT_UNISWAP_V2_FACTORY_ADDRESS) => {
     try {
         if (!provider) {
             throw new Error('Provider is required');
-        }
-        
-        if (!factoryAddress) {
-            throw new Error('Factory address is required');
         }
         
         if (typeof index !== 'number' || index < 0) {
             throw new Error('Valid index is required');
         }
         
-        if (!isValidAddress(factoryAddress)) {
+        const finalFactoryAddress = factoryAddress || DEFAULT_UNISWAP_V2_FACTORY_ADDRESS;
+        
+        if (!isValidAddress(finalFactoryAddress)) {
             throw new Error('Invalid factory address format');
         }
         
-        const txResponse = await provider.call(factoryAddress, encodeAllPairs(index));
+        const txResponse = await provider.call(finalFactoryAddress, encodeAllPairs(index));
         
         if (!txResponse) {
             throw new Error('No response from contract call');
@@ -274,21 +273,19 @@ export const getAllPairs = async (provider, factoryAddress, index) => {
     }
 };
 
-export const getAllPairsLength = async (provider, factoryAddress) => {
+export const getAllPairsLength = async (provider, factoryAddress = DEFAULT_UNISWAP_V2_FACTORY_ADDRESS) => {
     try {
         if (!provider) {
             throw new Error('Provider is required');
         }
         
-        if (!factoryAddress) {
-            throw new Error('Factory address is required');
-        }
+        const finalFactoryAddress = factoryAddress || DEFAULT_UNISWAP_V2_FACTORY_ADDRESS;
         
-        if (!isValidAddress(factoryAddress)) {
+        if (!isValidAddress(finalFactoryAddress)) {
             throw new Error('Invalid factory address format');
         }
         
-        const txResponse = await provider.call(factoryAddress, encodeAllPairsLength());
+        const txResponse = await provider.call(finalFactoryAddress, encodeAllPairsLength());
         
         if (!txResponse) {
             throw new Error('No response from contract call');
@@ -308,21 +305,19 @@ export const getAllPairsLength = async (provider, factoryAddress) => {
     }
 };
 
-export const getFeeTo = async (provider, factoryAddress) => {
+export const getFeeTo = async (provider, factoryAddress = DEFAULT_UNISWAP_V2_FACTORY_ADDRESS) => {
     try {
         if (!provider) {
             throw new Error('Provider is required');
         }
         
-        if (!factoryAddress) {
-            throw new Error('Factory address is required');
-        }
+        const finalFactoryAddress = factoryAddress || DEFAULT_UNISWAP_V2_FACTORY_ADDRESS;
         
-        if (!isValidAddress(factoryAddress)) {
+        if (!isValidAddress(finalFactoryAddress)) {
             throw new Error('Invalid factory address format');
         }
         
-        const txResponse = await provider.call(factoryAddress, encodeFeeTo());
+        const txResponse = await provider.call(finalFactoryAddress, encodeFeeTo());
         
         if (!txResponse) {
             throw new Error('No response from contract call');
@@ -342,21 +337,19 @@ export const getFeeTo = async (provider, factoryAddress) => {
     }
 };
 
-export const getFeeToSetter = async (provider, factoryAddress) => {
+export const getFeeToSetter = async (provider, factoryAddress = DEFAULT_UNISWAP_V2_FACTORY_ADDRESS) => {
     try {
         if (!provider) {
             throw new Error('Provider is required');
         }
         
-        if (!factoryAddress) {
-            throw new Error('Factory address is required');
-        }
+        const finalFactoryAddress = factoryAddress || DEFAULT_UNISWAP_V2_FACTORY_ADDRESS;
         
-        if (!isValidAddress(factoryAddress)) {
+        if (!isValidAddress(finalFactoryAddress)) {
             throw new Error('Invalid factory address format');
         }
         
-        const txResponse = await provider.call(factoryAddress, encodeFeeToSetter());
+        const txResponse = await provider.call(finalFactoryAddress, encodeFeeToSetter());
         
         if (!txResponse) {
             throw new Error('No response from contract call');

@@ -1,7 +1,7 @@
 {
   "name": "@bcoders.gr/abi-common",
-  "version": "2.2.0",
-  "description": "Enhanced utilities with organized helper functions for Ethereum contract interactions - supports informer.getReserves(), erc20.getBalanceOf(), uniswap.v2.factory.getPair(), uniswap.v2.router.swapExactETHForTokens() with comprehensive documentation",
+  "version": "3.0.0",
+  "description": "Production-ready utilities with enhanced router functionality for Ethereum contract interactions - supports call/send/estimate modes, fee-on-transfer tokens, and comprehensive validation",
   "main": "index.js",
   "type": "module",
   "scripts": {
