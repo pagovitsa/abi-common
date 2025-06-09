@@ -212,3 +212,170 @@ export const decodeAmountsResult = (functionName, data) => {
 
 // Export the ABI for external use
 export const ROUTER_ABI = UNISWAP_V2_ROUTER_ABI;
+
+// Helper function to validate Ethereum address
+const isValidAddress = (address) => {
+    return typeof address === 'string' && 
+           address.startsWith('0x') && 
+           address.length === 42 && 
+           /^0x[0-9a-fA-F]{40}$/.test(address);
+};
+
+// Helper functions for Uniswap V2 Router interactions
+export const getAmountOut = async (provider, routerAddress, amountIn, reserveIn, reserveOut) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!routerAddress) {
+            throw new Error('Router address is required');
+        }
+        
+        if (!isValidAddress(routerAddress)) {
+            throw new Error('Invalid router address format');
+        }
+        
+        const txResponse = await provider.call(routerAddress, encodeGetAmountOut(amountIn, reserveIn, reserveOut));
+        
+        if (!txResponse) {
+            throw new Error('No response from contract call');
+        }
+        
+        const response = decodeAmountResult('getAmountOut', txResponse);
+        
+        if (!response || !Array.isArray(response) || response.length === 0) {
+            throw new Error('Invalid response format or empty response');
+        }
+        
+        return response[0];
+        
+    } catch (error) {
+        console.error('Error getting amount out:', error.message);
+        throw error;
+    }
+};
+
+export const getAmountIn = async (provider, routerAddress, amountOut, reserveIn, reserveOut) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!routerAddress) {
+            throw new Error('Router address is required');
+        }
+        
+        if (!isValidAddress(routerAddress)) {
+            throw new Error('Invalid router address format');
+        }
+        
+        const txResponse = await provider.call(routerAddress, encodeGetAmountIn(amountOut, reserveIn, reserveOut));
+        
+        if (!txResponse) {
+            throw new Error('No response from contract call');
+        }
+        
+        const response = decodeAmountResult('getAmountIn', txResponse);
+        
+        if (!response || !Array.isArray(response) || response.length === 0) {
+            throw new Error('Invalid response format or empty response');
+        }
+        
+        return response[0];
+        
+    } catch (error) {
+        console.error('Error getting amount in:', error.message);
+        throw error;
+    }
+};
+
+export const getAmountsOut = async (provider, routerAddress, amountIn, path) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!routerAddress) {
+            throw new Error('Router address is required');
+        }
+        
+        if (!path || !Array.isArray(path) || path.length < 2) {
+            throw new Error('Valid path with at least 2 addresses is required');
+        }
+        
+        if (!isValidAddress(routerAddress)) {
+            throw new Error('Invalid router address format');
+        }
+        
+        // Validate all addresses in path
+        for (const address of path) {
+            if (!isValidAddress(address)) {
+                throw new Error(`Invalid address in path: ${address}`);
+            }
+        }
+        
+        const txResponse = await provider.call(routerAddress, encodeGetAmountsOut(amountIn, path));
+        
+        if (!txResponse) {
+            throw new Error('No response from contract call');
+        }
+        
+        const response = decodeAmountsResult('getAmountsOut', txResponse);
+        
+        if (!response || !Array.isArray(response) || response.length === 0) {
+            throw new Error('Invalid response format or empty response');
+        }
+        
+        return response[0];
+        
+    } catch (error) {
+        console.error('Error getting amounts out:', error.message);
+        throw error;
+    }
+};
+
+export const getAmountsIn = async (provider, routerAddress, amountOut, path) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!routerAddress) {
+            throw new Error('Router address is required');
+        }
+        
+        if (!path || !Array.isArray(path) || path.length < 2) {
+            throw new Error('Valid path with at least 2 addresses is required');
+        }
+        
+        if (!isValidAddress(routerAddress)) {
+            throw new Error('Invalid router address format');
+        }
+        
+        // Validate all addresses in path
+        for (const address of path) {
+            if (!isValidAddress(address)) {
+                throw new Error(`Invalid address in path: ${address}`);
+            }
+        }
+        
+        const txResponse = await provider.call(routerAddress, encodeGetAmountsIn(amountOut, path));
+        
+        if (!txResponse) {
+            throw new Error('No response from contract call');
+        }
+        
+        const response = decodeAmountsResult('getAmountsIn', txResponse);
+        
+        if (!response || !Array.isArray(response) || response.length === 0) {
+            throw new Error('Invalid response format or empty response');
+        }
+        
+        return response[0];
+        
+    } catch (error) {
+        console.error('Error getting amounts in:', error.message);
+        throw error;
+    }
+};

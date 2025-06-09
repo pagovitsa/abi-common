@@ -408,3 +408,155 @@ export const getPairAndTokenDetails = async (provider, pairAddress, informerAddr
         throw error;
     }
 };
+
+// Helper function to get contract owner with error handling
+export const getOwner = async (provider, contractAddress, informerAddress = "0x6cc4d0b709ee830fc6c4e124120596ede74ad2fb") => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!contractAddress) {
+            throw new Error('Contract address is required');
+        }
+        
+        // Validate address format (basic check)
+        if (!contractAddress.startsWith('0x') || contractAddress.length !== 42) {
+            throw new Error('Invalid contract address format');
+        }
+        
+        const txResponse = await provider.call(informerAddress, encodeGetOwner(contractAddress));
+        
+        if (!txResponse) {
+            throw new Error('No response from contract call');
+        }
+        
+        const response = decodeOwnerResult(txResponse);
+        
+        if (!response || !Array.isArray(response) || response.length === 0) {
+            throw new Error('Invalid response format or empty response');
+        }
+        
+        return response[0];
+        
+    } catch (error) {
+        console.error('Error getting contract owner:', error.message);
+        throw error;
+    }
+};
+
+// Helper function to get reserves with error handling
+export const getReserves = async (provider, pairAddress, informerAddress = "0x6cc4d0b709ee830fc6c4e124120596ede74ad2fb") => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!pairAddress) {
+            throw new Error('Pair address is required');
+        }
+        
+        // Validate address format (basic check)
+        if (!pairAddress.startsWith('0x') || pairAddress.length !== 42) {
+            throw new Error('Invalid pair address format');
+        }
+        
+        const txResponse = await provider.call(informerAddress, encodeGetReserves(pairAddress));
+        
+        if (!txResponse) {
+            throw new Error('No response from contract call');
+        }
+        
+        const response = decodeReservesResult(txResponse);
+        
+        if (!response || !Array.isArray(response) || response.length === 0) {
+            throw new Error('Invalid response format or empty response');
+        }
+        
+        return response[0];
+        
+    } catch (error) {
+        console.error('Error getting reserves:', error.message);
+        throw error;
+    }
+};
+
+// Helper function to get token balance with error handling
+export const getTokenBalance = async (provider, tokenAddress, walletAddress, informerAddress = "0x6cc4d0b709ee830fc6c4e124120596ede74ad2fb") => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!tokenAddress) {
+            throw new Error('Token address is required');
+        }
+        
+        if (!walletAddress) {
+            throw new Error('Wallet address is required');
+        }
+        
+        // Validate address format (basic check)
+        if (!tokenAddress.startsWith('0x') || tokenAddress.length !== 42) {
+            throw new Error('Invalid token address format');
+        }
+        
+        if (!walletAddress.startsWith('0x') || walletAddress.length !== 42) {
+            throw new Error('Invalid wallet address format');
+        }
+        
+        const txResponse = await provider.call(informerAddress, encodeGetTokenBalance(tokenAddress, walletAddress));
+        
+        if (!txResponse) {
+            throw new Error('No response from contract call');
+        }
+        
+        const response = decodeTokenBalanceResult(txResponse);
+        
+        if (!response || !Array.isArray(response) || response.length === 0) {
+            throw new Error('Invalid response format or empty response');
+        }
+        
+        return response[0];
+        
+    } catch (error) {
+        console.error('Error getting token balance:', error.message);
+        throw error;
+    }
+};
+
+// Helper function to get total supply with error handling
+export const getTotalSupply = async (provider, tokenAddress, informerAddress = "0x6cc4d0b709ee830fc6c4e124120596ede74ad2fb") => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!tokenAddress) {
+            throw new Error('Token address is required');
+        }
+        
+        // Validate address format (basic check)
+        if (!tokenAddress.startsWith('0x') || tokenAddress.length !== 42) {
+            throw new Error('Invalid token address format');
+        }
+        
+        const txResponse = await provider.call(informerAddress, encodeGetTotalSupply(tokenAddress));
+        
+        if (!txResponse) {
+            throw new Error('No response from contract call');
+        }
+        
+        const response = decodeInformerTotalSupplyResult(txResponse);
+        
+        if (!response || !Array.isArray(response) || response.length === 0) {
+            throw new Error('Invalid response format or empty response');
+        }
+        
+        return response[0];
+        
+    } catch (error) {
+        console.error('Error getting total supply:', error.message);
+        throw error;
+    }
+};

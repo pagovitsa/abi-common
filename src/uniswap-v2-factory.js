@@ -176,3 +176,202 @@ export const decodePairCreatedEvent = (data, topics) => {
 
 // Export the ABI for external use
 export const FACTORY_ABI = UNISWAP_V2_FACTORY_ABI;
+
+// Helper function to validate Ethereum address
+const isValidAddress = (address) => {
+    return typeof address === 'string' && 
+           address.startsWith('0x') && 
+           address.length === 42 && 
+           /^0x[0-9a-fA-F]{40}$/.test(address);
+};
+
+// Helper functions for Uniswap V2 Factory interactions
+export const getPair = async (provider, factoryAddress, tokenA, tokenB) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!factoryAddress) {
+            throw new Error('Factory address is required');
+        }
+        
+        if (!tokenA) {
+            throw new Error('Token A address is required');
+        }
+        
+        if (!tokenB) {
+            throw new Error('Token B address is required');
+        }
+        
+        if (!isValidAddress(factoryAddress)) {
+            throw new Error('Invalid factory address format');
+        }
+        
+        if (!isValidAddress(tokenA)) {
+            throw new Error('Invalid token A address format');
+        }
+        
+        if (!isValidAddress(tokenB)) {
+            throw new Error('Invalid token B address format');
+        }
+        
+        const txResponse = await provider.call(factoryAddress, encodeGetPair(tokenA, tokenB));
+        
+        if (!txResponse) {
+            throw new Error('No response from contract call');
+        }
+        
+        const response = decodeAddressResult('getPair', txResponse);
+        
+        if (!response || !Array.isArray(response) || response.length === 0) {
+            throw new Error('Invalid response format or empty response');
+        }
+        
+        return response[0];
+        
+    } catch (error) {
+        console.error('Error getting pair address:', error.message);
+        throw error;
+    }
+};
+
+export const getAllPairs = async (provider, factoryAddress, index) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!factoryAddress) {
+            throw new Error('Factory address is required');
+        }
+        
+        if (typeof index !== 'number' || index < 0) {
+            throw new Error('Valid index is required');
+        }
+        
+        if (!isValidAddress(factoryAddress)) {
+            throw new Error('Invalid factory address format');
+        }
+        
+        const txResponse = await provider.call(factoryAddress, encodeAllPairs(index));
+        
+        if (!txResponse) {
+            throw new Error('No response from contract call');
+        }
+        
+        const response = decodeAddressResult('allPairs', txResponse);
+        
+        if (!response || !Array.isArray(response) || response.length === 0) {
+            throw new Error('Invalid response format or empty response');
+        }
+        
+        return response[0];
+        
+    } catch (error) {
+        console.error('Error getting pair by index:', error.message);
+        throw error;
+    }
+};
+
+export const getAllPairsLength = async (provider, factoryAddress) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!factoryAddress) {
+            throw new Error('Factory address is required');
+        }
+        
+        if (!isValidAddress(factoryAddress)) {
+            throw new Error('Invalid factory address format');
+        }
+        
+        const txResponse = await provider.call(factoryAddress, encodeAllPairsLength());
+        
+        if (!txResponse) {
+            throw new Error('No response from contract call');
+        }
+        
+        const response = decodeUintResult('allPairsLength', txResponse);
+        
+        if (!response || !Array.isArray(response) || response.length === 0) {
+            throw new Error('Invalid response format or empty response');
+        }
+        
+        return response[0];
+        
+    } catch (error) {
+        console.error('Error getting pairs length:', error.message);
+        throw error;
+    }
+};
+
+export const getFeeTo = async (provider, factoryAddress) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!factoryAddress) {
+            throw new Error('Factory address is required');
+        }
+        
+        if (!isValidAddress(factoryAddress)) {
+            throw new Error('Invalid factory address format');
+        }
+        
+        const txResponse = await provider.call(factoryAddress, encodeFeeTo());
+        
+        if (!txResponse) {
+            throw new Error('No response from contract call');
+        }
+        
+        const response = decodeAddressResult('feeTo', txResponse);
+        
+        if (!response || !Array.isArray(response) || response.length === 0) {
+            throw new Error('Invalid response format or empty response');
+        }
+        
+        return response[0];
+        
+    } catch (error) {
+        console.error('Error getting feeTo address:', error.message);
+        throw error;
+    }
+};
+
+export const getFeeToSetter = async (provider, factoryAddress) => {
+    try {
+        if (!provider) {
+            throw new Error('Provider is required');
+        }
+        
+        if (!factoryAddress) {
+            throw new Error('Factory address is required');
+        }
+        
+        if (!isValidAddress(factoryAddress)) {
+            throw new Error('Invalid factory address format');
+        }
+        
+        const txResponse = await provider.call(factoryAddress, encodeFeeToSetter());
+        
+        if (!txResponse) {
+            throw new Error('No response from contract call');
+        }
+        
+        const response = decodeAddressResult('feeToSetter', txResponse);
+        
+        if (!response || !Array.isArray(response) || response.length === 0) {
+            throw new Error('Invalid response format or empty response');
+        }
+        
+        return response[0];
+        
+    } catch (error) {
+        console.error('Error getting feeToSetter address:', error.message);
+        throw error;
+    }
+};
