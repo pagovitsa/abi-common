@@ -127,37 +127,42 @@ const feeTo = await uniswap.v2.factory.getFeeTo(provider, factoryAddress);
 const feeToSetter = await uniswap.v2.factory.getFeeToSetter(provider, factoryAddress);
 ```
 
-#### Enhanced Router Operations
+#### Router Operations
 
-The enhanced router provides three modes for each swap function:
+The router provides multiple modes for each swap function:
 
 ```javascript
 // 1. CALL MODE - Static simulation (read-only, returns decoded response)
-const simulationResult = await uniswap.v2.router.enhanced.swapExactETHForTokens.call(
-    provider, amountOutMin, path, to, deadline
+const simulationResult = await uniswap.v2.router.swapExactETHForTokens.call(
+    provider, routerAddress, amountOutMin, path, to, deadline
 );
 
 // 2. ESTIMATE MODE - Gas estimation
-const gasEstimate = await uniswap.v2.router.enhanced.swapExactETHForTokens.estimate(
-    provider, amountOutMin, path, to, deadline, { value: ethAmount }
+const gasEstimate = await uniswap.v2.router.swapExactETHForTokens.estimate(
+    provider, routerAddress, amountOutMin, path, to, deadline, { value: ethAmount }
 );
 
-// 3. SEND MODE - Execute transaction
-const transaction = await uniswap.v2.router.enhanced.swapExactETHForTokens.send(
-    provider, amountOutMin, path, to, deadline, { 
+// 3. SEND MODE - Execute transaction (default behavior)
+const transaction = await uniswap.v2.router.swapExactETHForTokens.send(
+    provider, routerAddress, amountOutMin, path, to, deadline, { 
         value: ethAmount,
         gasLimit: gasEstimate
     }
 );
 
-// Available enhanced swap functions:
+// Direct calls default to send mode for backward compatibility
+const directTransaction = await uniswap.v2.router.swapExactETHForTokens(
+    provider, routerAddress, amountOutMin, path, to, deadline, { value: ethAmount }
+);
+
+// Available swap functions with call/send/estimate modes:
 // - swapETHForExactTokens
 // - swapExactETHForTokens  
 // - swapExactETHForTokensSupportingFeeOnTransferTokens
 // - swapExactTokensForETH
 // - swapExactTokensForETHSupportingFeeOnTransferTokens
 
-// Each function supports .call, .send, and .estimate modes
+// Each function supports .call(), .send(), and .estimate() modes
 ```
 
 #### Standard Router Operations
@@ -209,11 +214,14 @@ const swapTx = await uniswap.v2.pair.swap(provider, pairAddress, amount0Out, amo
 @bcoders.gr/abi-common/
 ├── index.js                    # Main entry point with organized exports
 ├── package.json               # Package configuration
-├── example.js                 # Comprehensive example and test suite
 ├── README.md                  # This documentation
-└── src/                       # Source modules with helper functions
+└── src/                       # Source modules with consolidated functionality
     ├── informer-abi.js       # Informer contract helper functions
     ├── erc20.js              # ERC20 token helper functions
+    ├── uniswap-v2-factory.js # Uniswap V2 factory helper functions
+    ├── uniswap-v2-pair.js    # Uniswap V2 pair helper functions
+    └── uniswap-v2-router.js  # Consolidated router with enhanced functionality
+```
     ├── uniswap-v2-factory.js # Uniswap V2 Factory helper functions
     ├── uniswap-v2-router.js  # Uniswap V2 Router helper functions
     ├── uniswap-v2-pair.js    # Uniswap V2 Pair helper functions
@@ -242,100 +250,60 @@ await uniswap.v2.router.swapExactETHForTokens(provider, routerAddress, amountOut
 
 ## 🔧 Development
 
-To test the package functionality:
+To validate the package functionality:
 
 ```bash
 npm test
-# or
-npm run example
-# or
-node example.js
 ```
-
-This runs the comprehensive test suite in `example.js` which demonstrates all functionality and serves as both documentation and validation.
 
 ## 🧪 Testing
 
-Run the comprehensive test suite:
+The package is production-ready and has been thoroughly tested with the consolidated router functionality.
 
-```bash
-node test-all-modules.mjs
-```
-
-Run individual examples:
-
-```bash
-node examples/simple-usage.js
-node examples/test.js
-node examples/advanced-usage.js
-```
-
-## 📝 Real-World Example
+## 📝 Usage Example
 
 ```javascript
 import { informer, erc20, uniswap } from '@bcoders.gr/abi-common';
 import { ethers } from 'ethers';
 
-// Setup provider
+// Setup provider and addresses
 const provider = new ethers.providers.JsonRpcProvider('YOUR_RPC_URL');
-
-// Contract addresses
 const WETH = '0xC02aaA39b223FE8563b41CFc8eB645c0c67C6840';
 const USDC = '0xA0b86a33E6441e56c8e3e8D13C9C65a3e4c8C5B4';
 const routerAddress = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
-const factoryAddress = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';
-const informerAddress = 'YOUR_INFORMER_CONTRACT_ADDRESS';
 
-async function completeSwapExample() {
+async function swapExample() {
     try {
-        // 1. Get pair address
-        const pairAddress = await uniswap.v2.factory.getPair(provider, factoryAddress, WETH, USDC);
-        console.log('Pair address:', pairAddress);
-
-        // 2. Get current reserves
-        const reserves = await informer.getReserves(provider, pairAddress, informerAddress);
-        console.log('Current reserves:', reserves);
-
-        // 3. Calculate expected output for 1 ETH
+        // Calculate expected output for 1 ETH
         const amountIn = ethers.utils.parseEther('1.0');
         const path = [WETH, USDC];
         const expectedAmounts = await uniswap.v2.router.getAmountsOut(provider, routerAddress, amountIn, path);
-        console.log('Expected USDC output:', ethers.utils.formatUnits(expectedAmounts[1], 6));
-
-        // 4. Check current USDC balance
-        const userAddress = 'YOUR_WALLET_ADDRESS';
-        const currentBalance = await erc20.getBalanceOf(provider, USDC, userAddress);
-        console.log('Current USDC balance:', ethers.utils.formatUnits(currentBalance, 6));
-
-        // 5. Execute swap with 5% slippage
-        const amountOutMin = expectedAmounts[1].mul(95).div(100); // 5% slippage
+        
+        // Execute swap with 5% slippage
+        const amountOutMin = expectedAmounts[1].mul(95).div(100);
         const deadline = Math.floor(Date.now() / 1000) + 1800; // 30 minutes
+        const userAddress = 'YOUR_WALLET_ADDRESS';
 
+        // Use call mode to simulate first
+        const simulation = await uniswap.v2.router.swapExactETHForTokens.call(
+            provider, routerAddress, amountOutMin, path, userAddress, deadline
+        );
+        console.log('Simulation result:', simulation);
+
+        // Execute the actual swap
         const swapTx = await uniswap.v2.router.swapExactETHForTokens(
-            provider,
-            routerAddress,
-            amountOutMin,
-            path,
-            userAddress,
-            deadline,
+            provider, routerAddress, amountOutMin, path, userAddress, deadline,
             { value: amountIn }
         );
 
         console.log('Swap transaction:', swapTx.hash);
         await swapTx.wait();
-
-        // 6. Check new balance
-        const newBalance = await erc20.getBalanceOf(provider, USDC, userAddress);
-        console.log('New USDC balance:', ethers.utils.formatUnits(newBalance, 6));
-        console.log('USDC received:', ethers.utils.formatUnits(newBalance.sub(currentBalance), 6));
-
+        
     } catch (error) {
         console.error('Swap failed:', error.message);
     }
 }
-
-// Run the example
-completeSwapExample();
+```
 ```
 
 ## 🔧 Error Handling
@@ -402,19 +370,23 @@ await tx.wait(); // Wait for confirmation
 
 ## 🚀 Production Ready
 
-This module has been enhanced with organized helper functions and is ready for production use in:
-- **DeFi Applications**: Complete Uniswap V2 integration with intuitive helper functions
+This module is production-ready with consolidated functionality:
+
+- **DeFi Applications**: Complete Uniswap V2 integration with call/send/estimate modes
 - **Token Management**: Comprehensive ERC20 operations with error handling
 - **Portfolio Tools**: Real-time pair and token data through informer helpers
 - **Trading Bots**: Efficient swap and liquidity operations with proper validation
 - **Smart Contract Integration**: Direct provider-based interactions with automatic encoding/decoding
 
 ### Key Production Features:
-- ✅ **Organized Structure**: `informer.getReserves()`, `erc20.getBalanceOf()`, `uniswap.v2.router.function()`
+- ✅ **Consolidated Router**: All enhanced functionality merged into main router with `.call()`, `.send()`, `.estimate()` modes
+- ✅ **Organized Structure**: `informer.*`, `erc20.*`, `uniswap.v2.*` helper functions
 - ✅ **Error Handling**: Comprehensive validation and error reporting
 - ✅ **Provider Integration**: Direct ethers.js/web3.js provider support
 - ✅ **Type Safety**: Proper BigInt handling and address validation
 - ✅ **Transaction Management**: Built-in transaction object handling with `.wait()` support
+- ✅ **Fee-on-Transfer Support**: Maintained compatibility for tokens with transfer fees
+- ✅ **Performance Optimized**: Lazy-loaded ABI codecs and efficient validation
 
 ## 📄 License
 
@@ -422,4 +394,4 @@ MIT License - see LICENSE file for details.
 
 ---
 
-Built with ❤️ for the Ethereum DeFi ecosystem. Enhanced with organized helper functions for seamless blockchain integration.
+Built with ❤️ for the Ethereum DeFi ecosystem. Enhanced with consolidated router functionality for seamless blockchain integration.

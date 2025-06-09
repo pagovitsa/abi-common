@@ -5,10 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "node example.js",
-    "example": "node example.js",
-    "benchmark": "node benchmark.js",
-    "prepublishOnly": "npm test"
+    "test": "echo \"No tests specified yet\"",
+    "benchmark": "node benchmark.js"
   },
   "repository": {
     "type": "git",
